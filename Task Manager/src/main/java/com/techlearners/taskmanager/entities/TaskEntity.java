@@ -3,6 +3,7 @@ package com.techlearners.taskmanager.entities;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class TaskEntity {
@@ -12,5 +13,6 @@ public class TaskEntity {
     private String description;
     private Date deadline;
     private boolean completed;
+
 
 }
