@@ -5,6 +5,8 @@ import com.techlearners.taskmanager.entities.TaskEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,15 +14,16 @@ import java.util.Date;
 public class TaskService {
     private ArrayList<TaskEntity> tasks = new ArrayList<>();
     private int taskId =1;
+    private final SimpleDateFormat deadLineFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
 
 
-    public TaskEntity addTask(String title, String description, String deadLine){
+    public TaskEntity addTask(String title, String description, String deadLine) throws ParseException {
         TaskEntity task = new TaskEntity();
         task.setId(taskId);
         task.setTitle(title);
         task.setDescription(description);
-//        task.setDeadline(new Date(deadLine)); //TODO: Validate date format
+        task.setDeadline(deadLineFormatter.parse(deadLine));
         task.setCompleted(false);
         tasks.add(task);
         taskId++;
@@ -38,5 +41,24 @@ public class TaskService {
             }
         }
         return null;
+    }
+
+    public TaskEntity updateTask(int id, String description, String deadLine, Boolean completed) throws ParseException{
+        TaskEntity task = getTaskById(id);
+        if (task == null){
+            return null;
+        }
+        if(description != null){
+            task.setDescription(description);
+        }
+
+        if(deadLine != null){
+            task.setDeadline(deadLineFormatter.parse(deadLine));
+        }
+
+        if(completed != null){
+            task.setCompleted(completed);
+        }
+        return task;
     }
 }
